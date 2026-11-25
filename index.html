@@ -1,467 +1,1325 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Media TraX</title>
 
-  <!-- PWA & Apple Native-Like Support -->
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Media TraX" />
-  <meta name="theme-color" content="#0b0d14" />
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%230b0d14'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%236366f1'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon points='190,140 380,256 190,372' fill='url(%23g)'/%3E%3C/svg%3E" />
+  <meta name="theme-color" content="#13151b" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%2313151b'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23246bfd'/%3E%3Cstop offset='50%25' stop-color='%239b6bff'/%3E%3Cstop offset='100%25' stop-color='%23ff5ec4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpolygon points='195,140 385,256 195,372' fill='url(%23g)'/%3E%3C/svg%3E" />
 
   <style>
-    :root {
-      --bg: #0b0d14;
-      --surface: #141824;
-      --surface-2: #1c2233;
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #f3f4f6;
-      --muted: #9ca3af;
-      --accent: #6366f1;
-      --accent-2: #ec4899;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --radius: 18px;
+    @property --neon-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --bg: #13151b;
+      --bg-2: #181b23;
+      --card: #1f222c;
+      --card-hover: #262a36;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f8fafc;
+      --muted: #8e95a9;
+      --primary: #246bfd;
+      --purple: #9b6bff;
+      --pink: #ff5ec4;
+      --cyan: #22d3ee;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --danger: #ef4444;
+      --glass-bg: rgba(255, 255, 255, 0.07);
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.42), inset 0 -1px 2px rgba(0, 0, 0, 0.38);
+      --shadow: 0 14px 36px rgba(0, 0, 0, 0.42);
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    [data-theme="light"] {
+      --bg: #eef2f9;
+      --bg-2: #e4eaf5;
+      --card: rgba(255, 255, 255, 0.86);
+      --card-hover: #ffffff;
+      --border: rgba(15, 23, 42, 0.09);
+      --text: #0f172a;
+      --muted: #64748b;
+      --glass-bg: rgba(255, 255, 255, 0.58);
+      --glass-border: rgba(255, 255, 255, 0.85);
+      --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.95), inset 0 -1px 2px rgba(15, 23, 42, 0.08);
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: env(safe-area-inset-top) 16px calc(90px + env(safe-area-inset-bottom)) 16px;
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+      padding: calc(14px + env(safe-area-inset-top)) 16px calc(112px + env(safe-area-inset-bottom)) 16px;
       background-image:
-        radial-gradient(circle at 15% 10%, rgba(99, 102, 241, 0.14), transparent 40%),
-        radial-gradient(circle at 85% 90%, rgba(236, 72, 153, 0.12), transparent 40%);
+        radial-gradient(circle at 12% 8%, rgba(36, 107, 253, 0.16), transparent 36%),
+        radial-gradient(circle at 88% 18%, rgba(155, 107, 255, 0.15), transparent 38%),
+        radial-gradient(circle at 50% 95%, rgba(255, 94, 196, 0.11), transparent 40%);
     }
 
-    .container { max-width: 1100px; margin: 0 auto; }
+    .app-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
 
-    /* Header */
-    header {
+    /* Apple Liquid Glass Primitive */
+    .liquid-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(22px) saturate(190%);
+      -webkit-backdrop-filter: blur(22px) saturate(190%);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-highlight), 0 8px 22px rgba(0, 0, 0, 0.22);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 15px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.28s var(--spring), box-shadow 0.28s ease, background 0.28s ease;
+      user-select: none;
+    }
+
+    .liquid-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.28) 50%, transparent 80%);
+      transform: translateX(-120%);
+      transition: transform 0.6s ease;
+      pointer-events: none;
+    }
+
+    .liquid-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: var(--glass-highlight), 0 12px 28px rgba(36, 107, 253, 0.28);
+    }
+
+    .liquid-btn:hover::before {
+      transform: translateX(120%);
+    }
+
+    .liquid-btn:active {
+      transform: scale(0.93);
+    }
+
+    .liquid-btn.primary {
+      background: linear-gradient(135deg, rgba(36, 107, 253, 0.88), rgba(155, 107, 255, 0.88));
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .liquid-btn.icon-only {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      font-size: 16px;
+    }
+
+    /* Top Bar */
+    .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 0 16px;
       gap: 12px;
       flex-wrap: wrap;
+      margin-bottom: 22px;
+      animation: fadeSlideUp 0.45s ease both;
     }
 
-    .brand {
+    .brand-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 13px;
     }
 
-    .logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    .brand-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--purple), var(--pink));
       display: grid;
       place-items: center;
-      font-weight: 800;
-      font-size: 18px;
-      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 10px 26px rgba(36, 107, 253, 0.38);
+      animation: floatPulse 4s ease-in-out infinite;
     }
 
-    .brand h1 { font-size: 22px; font-weight: 800; letter-spacing: 0.3px; }
-    .sync-badge {
-      font-size: 12px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: var(--surface);
-      border: 1px solid var(--border);
+    .brand-meta h1 {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      line-height: 1.15;
+    }
+
+    .sync-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      font-size: 11.5px;
       color: var(--muted);
+      margin-top: 3px;
+      font-weight: 600;
     }
+
     .sync-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--warning);
+      background: var(--orange);
+      transition: background 0.3s ease;
     }
-    .sync-dot.online { background: var(--success); box-shadow: 0 0 8px var(--success); }
-    .sync-dot.error { background: var(--danger); }
+    .sync-dot.online { background: var(--green); box-shadow: 0 0 10px var(--green); }
+    .sync-dot.error { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
 
-    .header-actions { display: flex; gap: 8px; align-items: center; }
-
-    button {
-      font-family: inherit;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease;
-    }
-    button:active { transform: scale(0.96); }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 14px;
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
-    }
-
-    .btn-ghost {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 9px 13px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    /* Stats */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-    }
-    .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-    .stat-value { font-size: 24px; font-weight: 800; }
-
-    /* Controls */
-    .controls {
+    .top-actions {
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
       align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .search-box {
-      flex: 1;
-      min-width: 220px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 11px 14px;
-      color: var(--text);
-      font-size: 14px;
-    }
-    .search-box:focus { border-color: var(--accent); outline: none; }
-
-    .tabs {
-      display: flex;
+    /* Segmented View Tabs (Taskez Overview / Collections / Library) */
+    .seg-tabs {
+      display: inline-flex;
       gap: 6px;
-      background: var(--surface);
       padding: 5px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      overflow-x: auto;
+      border-radius: 999px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-highlight);
+      margin-bottom: 22px;
     }
-    .tab {
+
+    .seg-tab {
+      border: none;
       background: transparent;
       color: var(--muted);
-      padding: 7px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.28s var(--spring);
+      font-family: inherit;
     }
-    .tab.active {
-      background: var(--surface-2);
+
+    .seg-tab.active {
+      background: var(--primary);
       color: #fff;
+      box-shadow: 0 6px 18px rgba(36, 107, 253, 0.45);
+      transform: scale(1.02);
     }
 
-    /* Grid */
-    .grid {
+    /* Dashboard Bento Grid (Taskez Inspired) */
+    .dash-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: 1.35fr 1fr 1fr;
       gap: 16px;
+      margin-bottom: 22px;
     }
 
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+    @media (max-width: 960px) {
+      .dash-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .dash-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Priority Progress Hero Card (Taskez signature pastel gradient) */
+    .hero-progress-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      background: linear-gradient(130deg, #8df4ff 0%, #c6a7ff 52%, #ff9be5 100%);
+      color: #11131a;
+      box-shadow: 0 16px 38px rgba(155, 107, 255, 0.28);
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      justify-content: space-between;
+      min-height: 178px;
+      transition: transform 0.3s var(--spring);
+      cursor: pointer;
     }
-    .card:hover { border-color: rgba(99, 102, 241, 0.45); transform: translateY(-2px); }
-    .card.completed { border-color: rgba(16, 185, 129, 0.4); }
 
-    .poster-wrap {
-      position: relative;
-      height: 180px;
-      background: linear-gradient(135deg, #1a1f33, #101320);
+    .hero-progress-card:hover {
+      transform: translateY(-4px) scale(1.01);
+    }
+
+    .hero-progress-card::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.24);
+      top: -65px;
+      inset-inline-end: -45px;
+      pointer-events: none;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      z-index: 1;
+    }
+
+    .hero-title { font-size: 19px; font-weight: 800; }
+    .hero-sub { font-size: 13px; font-weight: 600; opacity: 0.78; margin-top: 4px; }
+
+    .hero-pill {
+      background: rgba(17, 19, 26, 0.14);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .hero-bar-wrap { margin-top: 22px; z-index: 1; }
+    .hero-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .hero-track {
+      height: 10px;
+      background: rgba(17, 19, 26, 0.16);
+      border-radius: 999px;
       overflow: hidden;
     }
-    .poster-wrap img {
+    .hero-fill {
+      height: 100%;
+      background: #13151b;
+      border-radius: 999px;
+      transition: width 0.7s var(--spring);
+      position: relative;
+    }
+
+    /* Dark Glass Stat Cards */
+    .bento-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.28s var(--spring), border-color 0.28s ease;
+    }
+    .bento-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(155, 107, 255, 0.42);
+    }
+
+    /* Circular Goal Ring Card */
+    .ring-layout {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .ring-badge {
+      display: inline-block;
+      background: rgba(34, 197, 94, 0.18);
+      color: var(--green);
+      font-weight: 800;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .ring-svg { width: 88px; height: 88px; transform: rotate(-90deg); flex-shrink: 0; }
+    .ring-bg { fill: none; stroke: rgba(148, 163, 184, 0.18); stroke-width: 9; }
+    .ring-fg {
+      fill: none;
+      stroke: url(#ringGrad);
+      stroke-width: 9;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.8s var(--spring);
+    }
+
+    /* Mini Bar Chart Card */
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 10px;
+      height: 92px;
+      margin-top: 12px;
+    }
+    .chart-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+      justify-content: flex-end;
+      cursor: pointer;
+    }
+    .chart-bar-track {
+      width: 12px;
+      height: 68px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.14);
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .chart-bar-fill {
+      width: 100%;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--cyan), var(--purple));
+      transition: height 0.7s var(--spring);
+    }
+    .chart-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 700;
+      white-space: nowrap;
+      max-width: 54px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Overview Quick Stat Rows (Taskez style) */
+    .quick-stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .stat-row-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: transform 0.25s var(--spring), border-color 0.25s ease;
+    }
+    .stat-row-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(36, 107, 253, 0.45);
+    }
+    .stat-left { display: flex; align-items: center; gap: 12px; }
+    .squircle-ico {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .stat-num { font-size: 18px; font-weight: 800; }
+
+    /* Section Headers */
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 22px 0 14px;
+      flex-wrap: wrap;
+    }
+    .section-head h2 {
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Collections Grid (Taskez Projects Style) */
+    .collections-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+
+    .col-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      transition: transform 0.28s var(--spring), border-color 0.28s ease, box-shadow 0.28s ease;
+      overflow: hidden;
+    }
+    .col-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+    }
+    .col-card.active-col {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(36, 107, 253, 0.35), 0 14px 30px rgba(36, 107, 253, 0.2);
+    }
+    .col-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .col-info { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .col-title {
+      font-size: 15px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .col-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+    .col-pill {
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .col-bar-track {
+      height: 6px;
+      background: rgba(148, 163, 184, 0.16);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .col-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s var(--spring);
+    }
+
+    /* Controls Bar (Search + Filters + View Mode) */
+    .controls-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .search-wrap {
+      flex: 1;
+      min-width: 230px;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(36, 107, 253, 0.22);
+      transform: scale(1.005);
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .fpill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+      transition: all 0.25s var(--spring);
+    }
+    .fpill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 6px 16px rgba(36, 107, 253, 0.35);
+    }
+
+    /* Media Cards Grid with Animated Neon Border */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 18px;
+    }
+
+    .media-grid.list-view {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @keyframes neonSpin {
+      to { --neon-angle: 360deg; }
+    }
+
+    .media-card {
+      position: relative;
+      border-radius: 20px;
+      padding: 2px;
+      background: var(--border);
+      cursor: pointer;
+      transition: transform 0.32s var(--spring), box-shadow 0.32s ease;
+      animation: fadeSlideUp 0.35s ease both;
+    }
+
+    .media-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 2px;
+      background: conic-gradient(
+        from var(--neon-angle),
+        transparent 0deg,
+        var(--cyan) 65deg,
+        var(--purple) 140deg,
+        var(--pink) 215deg,
+        transparent 285deg
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      animation: neonSpin 3.2s linear infinite;
+      pointer-events: none;
+    }
+
+    .media-card:hover,
+    .media-card.watched-glow:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 18px 38px rgba(155, 107, 255, 0.26);
+    }
+
+    .media-card:hover::before {
+      opacity: 1;
+    }
+
+    .media-card-inner {
+      position: relative;
+      background: var(--card);
+      border-radius: 18px;
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+    }
+
+    .media-grid.list-view .media-card-inner {
+      flex-direction: row;
+      align-items: center;
+      padding: 10px;
+      gap: 14px;
+    }
+
+    .poster-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      background: linear-gradient(135deg, #1b1f2e, #12141c);
+      overflow: hidden;
+    }
+
+    .media-grid.list-view .poster-box {
+      width: 56px;
+      height: 82px;
+      aspect-ratio: auto;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+
+    .poster-box img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.45s ease, opacity 0.4s ease;
     }
-    .poster-placeholder {
+
+    .media-card:hover .poster-box img {
+      transform: scale(1.06);
+    }
+
+    .poster-fallback {
       width: 100%;
       height: 100%;
-      display: grid;
-      place-items: center;
-      font-size: 40px;
-      color: rgba(255, 255, 255, 0.15);
-    }
-
-    .type-pill {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(11, 13, 20, 0.8);
-      backdrop-filter: blur(8px);
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      border: 1px solid var(--border);
-    }
-
-    .status-btn {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: rgba(11, 13, 20, 0.8);
-      backdrop-filter: blur(8px);
-      color: var(--muted);
-      border: 1px solid var(--border);
-      font-size: 16px;
-      display: grid;
-      place-items: center;
-    }
-    .card.completed .status-btn {
-      background: var(--success);
-      color: #fff;
-      border-color: var(--success);
-    }
-
-    .card-body {
-      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      flex: 1;
-    }
-
-    .card-title { font-size: 16px; font-weight: 700; line-height: 1.3; }
-    .card-meta { font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
-
-    .ep-bar {
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      background: var(--surface-2);
-      padding: 8px 10px;
-      border-radius: 12px;
+      justify-content: center;
+      padding: 14px;
+      text-align: center;
       gap: 8px;
+      background: radial-gradient(circle at 30% 20%, rgba(36, 107, 253, 0.28), rgba(155, 107, 255, 0.14), #13151c);
+      color: rgba(255, 255, 255, 0.85);
     }
-    .ep-controls { display: flex; gap: 6px; align-items: center; }
-    .ep-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: var(--surface);
-      color: #fff;
+    .poster-fallback .pf-ico { font-size: 30px; }
+    .poster-fallback .pf-txt {
+      font-size: 12px;
       font-weight: 800;
-      font-size: 15px;
-      border: 1px solid var(--border);
-    }
-    .ep-btn:hover { background: var(--accent); }
-
-    .progress-track {
-      height: 5px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 999px;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      transition: width 0.25s ease;
+
+    .badge-type {
+      position: absolute;
+      top: 9px;
+      inset-inline-start: 9px;
+      background: rgba(13, 15, 22, 0.72);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
 
-    .card-footer {
+    .check-fab {
+      position: absolute;
+      top: 9px;
+      inset-inline-end: 9px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(13, 15, 22, 0.65);
+      backdrop-filter: blur(10px);
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 15px;
+      font-weight: 900;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform 0.25s var(--spring), background 0.25s ease;
+      z-index: 2;
+    }
+    .check-fab:hover { transform: scale(1.14); }
+    .media-card.completed .check-fab {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.75);
+    }
+
+    .card-info {
+      padding: 12px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: auto;
-      padding-top: 6px;
-      border-top: 1px solid var(--border);
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
     }
 
-    .stars { color: var(--warning); font-size: 14px; letter-spacing: 1px; cursor: pointer; }
-    .del-btn {
+    .media-grid.list-view .card-info {
+      padding: 0;
+    }
+
+    .m-title {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.3;
+      direction: ltr;
+      text-align: start;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .m-meta {
+      font-size: 11.5px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .m-prog-track {
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.16);
+      overflow: hidden;
+      margin-top: auto;
+    }
+    .m-prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink));
+      transition: width 0.35s ease;
+    }
+
+    /* Floating Apple Liquid Glass Bottom Dock */
+    .liquid-dock {
+      position: fixed;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(26px) saturate(200%);
+      -webkit-backdrop-filter: blur(26px) saturate(200%);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-highlight), 0 18px 42px rgba(0, 0, 0, 0.45);
+      z-index: 90;
+    }
+
+    .dock-item {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
       background: transparent;
       color: var(--muted);
-      font-size: 13px;
-      padding: 4px 8px;
-      border-radius: 8px;
+      font-size: 19px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform 0.28s var(--spring), color 0.25s ease, background 0.25s ease;
     }
-    .del-btn:hover { color: var(--danger); background: rgba(239, 68, 68, 0.1); }
-
-    .empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--muted);
-      background: var(--surface);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
+    .dock-item:hover { transform: translateY(-3px) scale(1.08); color: var(--text); }
+    .dock-item.active {
+      background: rgba(36, 107, 253, 0.22);
+      color: var(--primary);
+      box-shadow: inset 0 0 0 1px rgba(36, 107, 253, 0.45);
     }
 
-    /* Modal */
-    .modal-backdrop {
+    .dock-add {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      background: linear-gradient(135deg, var(--primary), var(--purple));
+      color: #fff;
+      font-size: 26px;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(36, 107, 253, 0.55);
+      transition: transform 0.3s var(--spring);
+    }
+    .dock-add:hover { transform: scale(1.12) rotate(90deg); }
+    .dock-add:active { transform: scale(0.92); }
+
+    /* Modals */
+    .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.72);
-      backdrop-filter: blur(6px);
+      background: rgba(8, 10, 16, 0.74);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: none;
       place-items: center;
       padding: 16px;
-      z-index: 100;
+      z-index: 200;
+      overflow-y: auto;
     }
-    .modal-backdrop.open { display: grid; }
+    .modal-overlay.open { display: grid; animation: fadeIn 0.22s ease; }
 
-    .modal {
+    .modal-box {
       width: 100%;
-      max-width: 440px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 22px;
+      max-width: 520px;
+      background: var(--card);
+      border: 1px solid var(--glass-border);
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.55);
+      animation: modalPop 0.35s var(--spring);
+      position: relative;
+    }
+
+    /* Detail Modal Animated Neon Poster Frame */
+    .detail-layout {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    @media (max-width: 560px) {
+      .detail-layout { flex-direction: column; align-items: center; text-align: center; }
+    }
+
+    .neon-poster-frame {
+      position: relative;
+      width: 170px;
+      aspect-ratio: 2 / 3;
+      border-radius: 20px;
+      padding: 3.5px;
+      background: conic-gradient(
+        from var(--neon-angle),
+        var(--cyan),
+        var(--primary),
+        var(--purple),
+        var(--pink),
+        var(--cyan)
+      );
+      animation: neonSpin 2.6s linear infinite;
+      box-shadow: 0 0 32px rgba(155, 107, 255, 0.5);
+      flex-shrink: 0;
+    }
+
+    .neon-poster-frame img,
+    .neon-poster-frame .poster-fallback {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 17px;
+      display: block;
+    }
+
+    .detail-content {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
+      width: 100%;
     }
-    .modal h2 { font-size: 19px; font-weight: 800; }
+    .detail-title {
+      font-size: 22px;
+      font-weight: 900;
+      direction: ltr;
+      line-height: 1.2;
+      animation: kineticIn 0.45s var(--spring) both;
+    }
+    .detail-tags {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 560px) {
+      .detail-tags { justify-content: center; }
+    }
+    .d-tag {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.14);
+      color: var(--text);
+    }
 
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label { font-size: 12px; color: var(--muted); font-weight: 600; }
-    .field input, .field select {
-      background: var(--surface-2);
+    .ep-box {
+      background: var(--bg-2);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 11px 12px;
-      color: #fff;
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .ep-btns { display: flex; gap: 8px; }
+
+    .star-row {
+      display: flex;
+      gap: 6px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    @media (max-width: 560px) {
+      .star-row { justify-content: center; }
+    }
+    .star-row span {
+      color: rgba(148, 163, 184, 0.35);
+      transition: transform 0.2s var(--spring), color 0.2s ease;
+    }
+    .star-row span.lit { color: #fbbf24; text-shadow: 0 0 12px rgba(251, 191, 36, 0.55); }
+    .star-row span:hover { transform: scale(1.25); }
+
+    /* Form Fields */
+    .form-grid { display: flex; flex-direction: column; gap: 13px; margin-top: 14px; }
+    .f-group { display: flex; flex-direction: column; gap: 5px; }
+    .f-group label { font-size: 12px; font-weight: 700; color: var(--muted); }
+    .f-group input, .f-group select {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 11px 13px;
+      color: var(--text);
       font-size: 14px;
       font-family: inherit;
     }
-    .field input:focus, .field select:focus { border-color: var(--accent); outline: none; }
+    .f-group input:focus, .f-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px; }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 50px 20px;
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-lg);
+      color: var(--muted);
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.9) translateY(16px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes kineticIn {
+      from { opacity: 0; transform: translateX(-14px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes floatPulse {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">▶</div>
-        <div>
+  <div class="app-shell">
+    <!-- Top Header -->
+    <header class="topbar">
+      <div class="brand-group">
+        <div class="brand-avatar">▶</div>
+        <div class="brand-meta">
           <h1>Media TraX</h1>
-          <div class="sync-badge">
+          <div class="sync-pill">
             <span id="syncDot" class="sync-dot"></span>
-            <span id="syncText">جاري الاتصال بـ Firebase...</span>
+            <span id="syncText">Connecting...</span>
           </div>
         </div>
       </div>
 
-      <div class="header-actions">
-        <button class="btn-ghost" id="exportBtn" title="نسخ احتياطي">تصدير</button>
-        <button class="btn-primary" id="openModalBtn">+ إضافة عمل</button>
+      <div class="top-actions">
+        <button class="liquid-btn icon-only" id="soundBtn" title="Sound Effects">🔊</button>
+        <button class="liquid-btn icon-only" id="themeBtn" title="Dark / Light Mode">🌙</button>
+        <button class="liquid-btn" id="langBtn">EN</button>
+        <button class="liquid-btn" id="newColBtn" data-i18n="newCollection">+ سلسلة</button>
+        <button class="liquid-btn primary" id="newItemBtn" data-i18n="addWork">+ عمل جديد</button>
       </div>
     </header>
 
-    <section class="stats">
-      <div class="stat-card">
-        <div class="stat-label">الإجمالي</div>
-        <div class="stat-value" id="statTotal">0</div>
+    <!-- Main Segmented Switch -->
+    <div class="seg-tabs">
+      <button class="seg-tab active" data-view="dashboard" data-i18n="tabDashboard">لوحة التحكم</button>
+      <button class="seg-tab" data-view="collections" data-i18n="tabCollections">السلاسل</button>
+      <button class="seg-tab" data-view="library" data-i18n="tabLibrary">كل الأعمال</button>
+    </div>
+
+    <!-- DASHBOARD SECTION -->
+    <section id="dashboardSection">
+      <div class="dash-grid">
+        <!-- Priority Progress Card (Taskez Gradient) -->
+        <div class="hero-progress-card" id="heroCard">
+          <div class="hero-top">
+            <div>
+              <div class="hero-title" data-i18n="overallProgress">تقدم المشاهدة العام</div>
+              <div class="hero-sub" id="heroSub">0 / 142</div>
+            </div>
+            <span class="hero-pill" id="heroPctPill">0%</span>
+          </div>
+          <div class="hero-bar-wrap">
+            <div class="hero-bar-labels">
+              <span data-i18n="completedLabel">المكتمل</span>
+              <span id="heroBarPct">0%</span>
+            </div>
+            <div class="hero-track">
+              <div class="hero-fill" id="heroFill" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Circular Completion Ring -->
+        <div class="bento-card">
+          <div class="ring-layout">
+            <div>
+              <span class="ring-badge" id="ringBadge">0%</span>
+              <div style="font-size:16px;font-weight:800" data-i18n="mcuTracker">تقدم عالم مارفل</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:4px" id="mcuSub">0 / 93</div>
+            </div>
+            <svg class="ring-svg" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#22d3ee"/>
+                  <stop offset="100%" stop-color="#9b6bff"/>
+                </linearGradient>
+              </defs>
+              <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+              <circle class="ring-fg" id="mcuRingFg" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+            </svg>
+          </div>
+          <button class="liquid-btn" style="margin-top:12px;width:100%" id="openMcuBtn">Marvel Cinematic Universe →</button>
+        </div>
+
+        <!-- Collections Distribution Chart -->
+        <div class="bento-card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-size:15px;font-weight:800" data-i18n="collectionsChart">توزيع التصنيفات</div>
+            <span style="font-size:11px;color:var(--muted);font-weight:700" id="totalColsBadge">5</span>
+          </div>
+          <div class="chart-bars" id="chartBars"></div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">مكتمل ✓</div>
-        <div class="stat-value" id="statDone" style="color: var(--success)">0</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">قيد المشاهدة</div>
-        <div class="stat-value" id="statWatching" style="color: var(--accent)">0</div>
+
+      <!-- Taskez Style Overview Stat Rows -->
+      <div class="quick-stats-row">
+        <div class="stat-row-card" data-quick-filter="all">
+          <div class="stat-left">
+            <div class="squircle-ico" style="background:linear-gradient(135deg,#f59e0b,#f97316)">🎬</div>
+            <div>
+              <div style="font-size:13px;font-weight:800" data-i18n="statTotal">إجمالي الأعمال</div>
+              <div style="font-size:11px;color:var(--muted)" data-i18n="tapToBrowse">اضغط للاستعراض</div>
+            </div>
+          </div>
+          <div class="stat-num" id="statTotal">0</div>
+        </div>
+
+        <div class="stat-row-card" data-quick-filter="completed">
+          <div class="stat-left">
+            <div class="squircle-ico" style="background:linear-gradient(135deg,#22c55e,#10b981)">✓</div>
+            <div>
+              <div style="font-size:13px;font-weight:800" data-i18n="statDone">مكتمل</div>
+              <div style="font-size:11px;color:var(--muted)" data-i18n="watchedItems">تمت مشاهدتها</div>
+            </div>
+          </div>
+          <div class="stat-num" id="statDone" style="color:var(--green)">0</div>
+        </div>
+
+        <div class="stat-row-card" data-quick-filter="unwatched">
+          <div class="stat-left">
+            <div class="squircle-ico" style="background:linear-gradient(135deg,#ec4899,#9b6bff)">⏳</div>
+            <div>
+              <div style="font-size:13px;font-weight:800" data-i18n="statRemaining">متبقي للمشاهدة</div>
+              <div style="font-size:11px;color:var(--muted)" data-i18n="inWatchlist">في القائمة</div>
+            </div>
+          </div>
+          <div class="stat-num" id="statRemaining" style="color:var(--pink)">0</div>
+        </div>
       </div>
     </section>
 
-    <section class="controls">
-      <input type="text" id="searchInput" class="search-box" placeholder="ابحث عن فيلم، مسلسل، أو أنمي..." />
-      <div class="tabs" id="filterTabs">
-        <button class="tab active" data-filter="all">الكل</button>
-        <button class="tab" data-filter="movie">أفلام</button>
-        <button class="tab" data-filter="series">مسلسلات</button>
-        <button class="tab" data-filter="anime">أنمي</button>
-        <button class="tab" data-filter="completed">مكتمل</button>
+    <!-- COLLECTIONS SECTION -->
+    <section id="collectionsSection">
+      <div class="section-head">
+        <h2 data-i18n="yourCollections">السلاسل والتصنيفات</h2>
+        <button class="liquid-btn" id="showAllColsBtn" data-i18n="showAll">عرض الكل</button>
       </div>
+      <div class="collections-grid" id="collectionsGrid"></div>
     </section>
 
-    <main class="grid" id="mediaGrid"></main>
+    <!-- LIBRARY / ITEMS SECTION -->
+    <section id="librarySection">
+      <div class="section-head">
+        <h2 id="activeCollectionHeading">All Media</h2>
+        <div style="display:flex;gap:8px">
+          <button class="liquid-btn icon-only" id="viewToggleBtn" title="Grid / List">⊞</button>
+        </div>
+      </div>
+
+      <div class="controls-bar">
+        <div class="search-wrap">
+          <input type="text" id="searchInput" class="search-input" placeholder="Search movies, series, Marvel..." />
+        </div>
+        <div class="filter-pills" id="typeFilters">
+          <button class="fpill active" data-type="all" data-i18n="fAll">الكل</button>
+          <button class="fpill" data-type="Movie" data-i18n="fMovies">أفلام</button>
+          <button class="fpill" data-type="Series" data-i18n="fSeries">مسلسلات</button>
+          <button class="fpill" data-type="Special" data-i18n="fSpecial">خاص</button>
+          <button class="fpill" data-type="completed" data-i18n="fDone">مكتمل ✓</button>
+          <button class="fpill" data-type="unwatched" data-i18n="fUnwatched">غير مشاهد</button>
+        </div>
+      </div>
+
+      <div class="media-grid" id="mediaGrid"></div>
+    </section>
   </div>
 
-  <!-- Add Media Modal -->
-  <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal">
-      <h2>إضافة عمل جديد</h2>
-      <div class="field">
-        <label>الاسم (يفضل بالإنجليزية لجلب البوستر تلقائياً)</label>
-        <input type="text" id="mTitle" placeholder="مثال: Inception أو Breaking Bad" />
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label>النوع</label>
-          <select id="mType">
-            <option value="movie">فيلم</option>
-            <option value="series">مسلسل</option>
-            <option value="anime">أنمي</option>
-          </select>
+  <!-- Floating Apple Liquid Glass Bottom Dock -->
+  <nav class="liquid-dock">
+    <button class="dock-item active" data-dock="dashboard" title="Dashboard">🏠</button>
+    <button class="dock-item" data-dock="collections" title="Collections">🗂️</button>
+    <button class="dock-add" id="dockAddBtn" title="Add Media">+</button>
+    <button class="dock-item" data-dock="library" title="Library">🎬</button>
+    <button class="dock-item" id="dockSearchBtn" title="Search">🔍</button>
+  </nav>
+
+  <!-- DETAIL MODAL (Animated Neon Poster Frame) -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-box">
+      <div class="detail-layout">
+        <div class="neon-poster-frame" id="detailPosterWrap"></div>
+        <div class="detail-content">
+          <h2 class="detail-title" id="detailTitle"></h2>
+          <div class="detail-tags" id="detailTags"></div>
+
+          <div class="star-row" id="detailStars"></div>
+
+          <div class="ep-box" id="detailEpBox" style="display:none">
+            <span style="font-size:13px;font-weight:700" id="detailEpLabel">Ep 0 / 10</span>
+            <div class="ep-btns">
+              <button class="liquid-btn icon-only" id="epMinusBtn">−</button>
+              <button class="liquid-btn icon-only primary" id="epPlusBtn">+</button>
+            </div>
+          </div>
+
+          <div class="f-group">
+            <label data-i18n="customPosterUrl">رابط بوستر مخصص (اختياري)</label>
+            <div style="display:flex;gap:8px">
+              <input type="url" id="detailPosterInput" placeholder="https://..." style="flex:1" />
+              <button class="liquid-btn" id="updatePosterBtn" data-i18n="save">حفظ</button>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="justify-content:space-between">
+            <button class="liquid-btn" id="detailDeleteBtn" style="color:var(--danger)" data-i18n="delete">حذف</button>
+            <div style="display:flex;gap:8px">
+              <button class="liquid-btn" id="closeDetailBtn" data-i18n="close">إغلاق</button>
+              <button class="liquid-btn primary" id="detailToggleBtn">✓ Watched</button>
+            </div>
+          </div>
         </div>
-        <div class="field">
-          <label>التقييم (1 - 5)</label>
-          <input type="number" id="mRating" min="1" max="5" value="5" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD MEDIA MODAL -->
+  <div class="modal-overlay" id="addItemModal">
+    <div class="modal-box">
+      <h2 style="font-size:20px;font-weight:800" data-i18n="addWorkTitle">إضافة عمل جديد</h2>
+      <div class="form-grid">
+        <div class="f-group">
+          <label data-i18n="englishTitleLbl">Title (English Only)</label>
+          <input type="text" id="inTitle" placeholder="e.g. Interstellar" dir="ltr" />
+        </div>
+        <div class="f-row">
+          <div class="f-group">
+            <label data-i18n="typeLbl">النوع</label>
+            <select id="inType">
+              <option value="Movie">Movie</option>
+              <option value="Series">Series</option>
+              <option value="Special">Special</option>
+            </select>
+          </div>
+          <div class="f-group">
+            <label data-i18n="collectionLbl">السلسلة / التصنيف</label>
+            <select id="inCollection"></select>
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-group">
+            <label data-i18n="releaseLbl">سنة / تاريخ الإصدار</label>
+            <input type="text" id="inRelease" placeholder="e.g. July 2026" dir="ltr" />
+          </div>
+          <div class="f-group">
+            <label data-i18n="episodesLbl">عدد الحلقات (للمسلسلات)</label>
+            <input type="number" id="inTotalEp" min="1" value="10" />
+          </div>
+        </div>
+        <div class="f-group">
+          <label data-i18n="posterOptLbl">Poster URL (Optional — Auto-fetched)</label>
+          <input type="url" id="inPoster" placeholder="https://..." dir="ltr" />
         </div>
       </div>
-      <div class="row-2" id="episodesRow" style="display:none;">
-        <div class="field">
-          <label>الحلقة الحالية</label>
-          <input type="number" id="mEpCurrent" min="0" value="0" />
+      <div class="modal-footer">
+        <button class="liquid-btn" id="cancelItemBtn" data-i18n="cancel">إلغاء</button>
+        <button class="liquid-btn primary" id="saveItemBtn" data-i18n="saveSync">حفظ ومزامنة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD COLLECTION MODAL -->
+  <div class="modal-overlay" id="addColModal">
+    <div class="modal-box">
+      <h2 style="font-size:20px;font-weight:800" data-i18n="newColTitle">إنشاء سلسلة / تصنيف جديد</h2>
+      <div class="form-grid">
+        <div class="f-group">
+          <label data-i18n="colNameLbl">Collection Name (English)</label>
+          <input type="text" id="colName" placeholder="e.g. DC Universe / Star Wars" dir="ltr" />
         </div>
-        <div class="field">
-          <label>إجمالي الحلقات</label>
-          <input type="number" id="mEpTotal" min="1" value="12" />
+        <div class="f-row">
+          <div class="f-group">
+            <label data-i18n="colIconLbl">أيقونة (Emoji)</label>
+            <input type="text" id="colIcon" value="🎬" />
+          </div>
+          <div class="f-group">
+            <label data-i18n="colColorLbl">اللون</label>
+            <input type="color" id="colColor" value="#9b6bff" style="height:44px;padding:4px" />
+          </div>
         </div>
       </div>
-      <div class="field">
-        <label>رابط البوستر (اختياري — يُجلب تلقائياً إذا تُرك فارغاً)</label>
-        <input type="url" id="mPoster" placeholder="https://..." />
-      </div>
-      <div class="modal-actions">
-        <button class="btn-ghost" id="closeModalBtn">إلغاء</button>
-        <button class="btn-primary" id="saveMediaBtn">حفظ ومزامنة</button>
+      <div class="modal-footer">
+        <button class="liquid-btn" id="cancelColBtn" data-i18n="cancel">إلغاء</button>
+        <button class="liquid-btn primary" id="saveColBtn" data-i18n="create">إنشاء</button>
       </div>
     </div>
   </div>
@@ -481,228 +1339,978 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const userDocRef = doc(db, "mediatrax", "main_library");
+    const cloudDocRef = doc(db, "mediatrax", "library_v2");
 
-    let items = JSON.parse(localStorage.getItem("mediatrax_cache") || "[]");
-    let currentFilter = "all";
-    let searchQuery = "";
+    // ================= SOUND ENGINE (Web Audio API) =================
+    let soundEnabled = localStorage.getItem("mtx_sound") !== "off";
+    let audioCtx = null;
 
-    const syncDot = document.getElementById("syncDot");
-    const syncText = document.getElementById("syncText");
-    const grid = document.getElementById("mediaGrid");
-
-    function setSyncStatus(state, text) {
-      syncDot.className = "sync-dot " + state;
-      syncText.textContent = text;
-    }
-
-    // Real-time Firestore listener
-    onSnapshot(userDocRef, (snap) => {
-      if (snap.exists() && Array.isArray(snap.data().items)) {
-        items = snap.data().items;
-        localStorage.setItem("mediatrax_cache", JSON.stringify(items));
-        render();
-      }
-      setSyncStatus("online", "متزامن سحابياً");
-    }, (err) => {
-      console.error(err);
-      setSyncStatus("error", "تعذر الاتصال (وضع محلي)");
-    });
-
-    async function saveToCloud() {
-      localStorage.setItem("mediatrax_cache", JSON.stringify(items));
-      render();
-      setSyncStatus("", "جاري المزامنة...");
+    function playSound(type = "click") {
+      if (!soundEnabled) return;
       try {
-        await setDoc(userDocRef, { items, updatedAt: Date.now() });
-        setSyncStatus("online", "متزامن سحابياً");
-      } catch (err) {
-        console.error(err);
-        setSyncStatus("error", "خطأ في الحفظ السحابي");
-      }
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === "click") {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(620, now);
+          osc.frequency.exponentialRampToValueAtTime(340, now + 0.055);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.start(now);
+          osc.stop(now + 0.065);
+        } else if (type === "success") {
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.07);
+          osc.frequency.setValueAtTime(783.99, now + 0.14);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } else if (type === "open") {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(560, now + 0.11);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+          osc.start(now);
+          osc.stop(now + 0.13);
+        }
+      } catch (_) {}
     }
 
-    // Fetch Poster via iTunes JSONP (No CORS issues)
-    function fetchPosterJSONP(title, type) {
-      return new Promise((resolve) => {
-        const cbName = "itCb_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
-        const media = type === "movie" ? "movie" : "tvShow";
-        const script = document.createElement("script");
-        const timer = setTimeout(() => { cleanup(); resolve(""); }, 3500);
+    // ================= I18N (UI ONLY - TITLES STRICTLY ENGLISH) =================
+    let currentLang = localStorage.getItem("mtx_lang") || "ar";
+    const i18n = {
+      ar: {
+        newCollection: "+ سلسلة",
+        addWork: "+ عمل جديد",
+        tabDashboard: "لوحة التحكم",
+        tabCollections: "السلاسل",
+        tabLibrary: "كل الأعمال",
+        overallProgress: "تقدم المشاهدة العام",
+        completedLabel: "المكتمل",
+        mcuTracker: "تقدم عالم مارفل",
+        collectionsChart: "توزيع التصنيفات",
+        statTotal: "إجمالي الأعمال",
+        tapToBrowse: "اضغط للاستعراض",
+        statDone: "مكتمل",
+        watchedItems: "تمت مشاهدتها",
+        statRemaining: "متبقي للمشاهدة",
+        inWatchlist: "في القائمة",
+        yourCollections: "السلاسل والتصنيفات",
+        showAll: "عرض الكل",
+        fAll: "الكل",
+        fMovies: "أفلام",
+        fSeries: "مسلسلات",
+        fSpecial: "خاص",
+        fDone: "مكتمل ✓",
+        fUnwatched: "غير مشاهد",
+        customPosterUrl: "رابط بوستر مخصص (اختياري)",
+        save: "حفظ",
+        delete: "حذف",
+        close: "إغلاق",
+        addWorkTitle: "إضافة عمل جديد",
+        englishTitleLbl: "الاسم (بالإنجليزية فقط)",
+        typeLbl: "النوع",
+        collectionLbl: "السلسلة / التصنيف",
+        releaseLbl: "سنة / تاريخ الإصدار",
+        episodesLbl: "عدد الحلقات (للمسلسلات)",
+        posterOptLbl: "رابط البوستر (اختياري — يُجلب تلقائياً)",
+        cancel: "إلغاء",
+        saveSync: "حفظ ومزامنة",
+        newColTitle: "إنشاء سلسلة / تصنيف جديد",
+        colNameLbl: "اسم السلسلة (بالإنجليزية)",
+        colIconLbl: "أيقونة",
+        colColorLbl: "اللون",
+        create: "إنشاء",
+        synced: "متزامن سحابياً",
+        syncing: "جاري المزامنة...",
+        offline: "وضع محلي",
+        searchPh: "ابحث بالاسم الإنجليزي..."
+      },
+      en: {
+        newCollection: "+ Collection",
+        addWork: "+ Add Media",
+        tabDashboard: "Dashboard",
+        tabCollections: "Collections",
+        tabLibrary: "All Media",
+        overallProgress: "Overall Watch Progress",
+        completedLabel: "Completed",
+        mcuTracker: "Marvel Cinematic Universe",
+        collectionsChart: "Collections Overview",
+        statTotal: "Total Works",
+        tapToBrowse: "Tap to browse",
+        statDone: "Completed",
+        watchedItems: "Watched items",
+        statRemaining: "Remaining",
+        inWatchlist: "In watchlist",
+        yourCollections: "Collections & Universes",
+        showAll: "Show All",
+        fAll: "All",
+        fMovies: "Movies",
+        fSeries: "Series",
+        fSpecial: "Special",
+        fDone: "Completed ✓",
+        fUnwatched: "Unwatched",
+        customPosterUrl: "Custom Poster URL (Optional)",
+        save: "Save",
+        delete: "Delete",
+        close: "Close",
+        addWorkTitle: "Add New Media",
+        englishTitleLbl: "Title (English Only)",
+        typeLbl: "Type",
+        collectionLbl: "Collection",
+        releaseLbl: "Release Date / Year",
+        episodesLbl: "Total Episodes (Series)",
+        posterOptLbl: "Poster URL (Optional — Auto-fetched)",
+        cancel: "Cancel",
+        saveSync: "Save & Sync",
+        newColTitle: "Create New Collection",
+        colNameLbl: "Collection Name (English)",
+        colIconLbl: "Icon",
+        colColorLbl: "Accent Color",
+        create: "Create",
+        synced: "Cloud Synced",
+        syncing: "Syncing...",
+        offline: "Offline Mode",
+        searchPh: "Search movies, series, Marvel..."
+      }
+    };
 
+    function applyLanguage() {
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+      document.getElementById("langBtn").textContent = currentLang === "ar" ? "EN" : "عربي";
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const k = el.dataset.i18n;
+        if (i18n[currentLang][k]) el.textContent = i18n[currentLang][k];
+      });
+      document.getElementById("searchInput").placeholder = i18n[currentLang].searchPh;
+    }
+
+    // ================= INITIAL FULL SEED DATA (142 ITEMS, ENGLISH TITLES ONLY) =================
+    const SEED_COLLECTIONS = [
+      { id: "mcu", name: "Marvel Cinematic Universe", icon: "🛡️", color: "#ef4444" },
+      { id: "power", name: "Power Universe", icon: "👑", color: "#f59e0b" },
+      { id: "favorites", name: "Favorite Movies", icon: "⭐", color: "#ec4899" },
+      { id: "movies", name: "Standalone Movies", icon: "🎬", color: "#246bfd" },
+      { id: "series", name: "Standalone Series", icon: "📺", color: "#9b6bff" }
+    ];
+
+    const MCU_RAW = [
+      ["Iron Man", "Movie", "May 2008"],
+      ["The Incredible Hulk", "Movie", "June 2008"],
+      ["Iron Man 2", "Movie", "May 2010"],
+      ["Thor", "Movie", "May 2011"],
+      ["Captain America: The First Avenger", "Movie", "July 2011"],
+      ["The Avengers", "Movie", "May 2012"],
+      ["Iron Man 3", "Movie", "May 2013"],
+      ["Agents of S.H.I.E.L.D. Season 1", "Series", "September 2013", 22],
+      ["Thor: The Dark World", "Movie", "November 2013"],
+      ["Captain America: The Winter Soldier", "Movie", "April 2014"],
+      ["Guardians of the Galaxy", "Movie", "August 2014"],
+      ["Agents of S.H.I.E.L.D. Season 2", "Series", "September 2014", 22],
+      ["Agent Carter Season 1", "Series", "January 2015", 8],
+      ["Daredevil Season 1", "Series", "April 2015", 13],
+      ["Avengers: Age of Ultron", "Movie", "May 2015"],
+      ["Ant-Man", "Movie", "July 2015"],
+      ["Agents of S.H.I.E.L.D. Season 3", "Series", "September 2015", 22],
+      ["Jessica Jones Season 1", "Series", "November 2015", 13],
+      ["Agent Carter Season 2", "Series", "January 2016", 10],
+      ["Daredevil Season 2", "Series", "March 2016", 13],
+      ["Captain America: Civil War", "Movie", "May 2016"],
+      ["Agents of S.H.I.E.L.D. Season 4", "Series", "September 2016", 22],
+      ["Luke Cage Season 1", "Series", "September 2016", 13],
+      ["Doctor Strange", "Movie", "November 2016"],
+      ["Iron Fist Season 1", "Series", "March 2017", 13],
+      ["Guardians of the Galaxy Vol. 2", "Movie", "May 2017"],
+      ["Spider-Man: Homecoming", "Movie", "July 2017"],
+      ["The Defenders", "Series", "August 2017", 8],
+      ["Inhumans", "Series", "September 2017", 8],
+      ["Thor: Ragnarok", "Movie", "November 2017"],
+      ["The Punisher Season 1", "Series", "November 2017", 13],
+      ["Runaways Season 1", "Series", "November 2017", 10],
+      ["Agents of S.H.I.E.L.D. Season 5", "Series", "December 2017", 22],
+      ["Black Panther", "Movie", "February 2018"],
+      ["Jessica Jones Season 2", "Series", "March 2018", 13],
+      ["Avengers: Infinity War", "Movie", "April 2018"],
+      ["Cloak & Dagger Season 1", "Series", "June 2018", 10],
+      ["Luke Cage Season 2", "Series", "June 2018", 13],
+      ["Ant-Man and the Wasp", "Movie", "July 2018"],
+      ["Iron Fist Season 2", "Series", "September 2018", 10],
+      ["Daredevil Season 3", "Series", "October 2018", 13],
+      ["Runaways Season 2", "Series", "December 2018", 13],
+      ["The Punisher Season 2", "Series", "January 2019", 13],
+      ["Captain Marvel", "Movie", "March 2019"],
+      ["Cloak & Dagger Season 2", "Series", "April 2019", 10],
+      ["Avengers: Endgame", "Movie", "April 2019"],
+      ["Agents of S.H.I.E.L.D. Season 6", "Series", "May 2019", 13],
+      ["Jessica Jones Season 3", "Series", "June 2019", 13],
+      ["Spider-Man: Far From Home", "Movie", "July 2019"],
+      ["Runaways Season 3", "Series", "December 2019", 10],
+      ["Agents of S.H.I.E.L.D. Season 7", "Series", "May 2020", 13],
+      ["Helstrom", "Series", "October 2020", 10],
+      ["WandaVision", "Series", "January 2021", 9],
+      ["The Falcon and the Winter Soldier", "Series", "March 2021", 6],
+      ["Loki Season 1", "Series", "June 2021", 6],
+      ["Black Widow", "Movie", "July 2021"],
+      ["What If...? Season 1", "Series", "August 2021", 9],
+      ["Shang-Chi and the Legend of the Ten Rings", "Movie", "September 2021"],
+      ["Eternals", "Movie", "November 2021"],
+      ["Hawkeye", "Series", "November 2021", 6],
+      ["Spider-Man: No Way Home", "Movie", "December 2021"],
+      ["Moon Knight", "Series", "March 2022", 6],
+      ["Doctor Strange in the Multiverse of Madness", "Movie", "May 2022"],
+      ["Ms. Marvel", "Series", "June 2022", 6],
+      ["Thor: Love and Thunder", "Movie", "July 2022"],
+      ["She-Hulk: Attorney at Law", "Series", "August 2022", 9],
+      ["Werewolf by Night", "Special", "October 2022"],
+      ["Black Panther: Wakanda Forever", "Movie", "November 2022"],
+      ["The Guardians of the Galaxy Holiday Special", "Special", "November 2022"],
+      ["Ant-Man and the Wasp: Quantumania", "Movie", "February 2023"],
+      ["Guardians of the Galaxy Vol. 3", "Movie", "May 2023"],
+      ["Secret Invasion", "Series", "June 2023", 6],
+      ["Loki Season 2", "Series", "October 2023", 6],
+      ["The Marvels", "Movie", "November 2023"],
+      ["What If...? Season 2", "Series", "December 2023", 9],
+      ["Echo", "Series", "January 2024", 5],
+      ["Deadpool & Wolverine", "Movie", "July 2024"],
+      ["Agatha All Along", "Series", "September 2024", 9],
+      ["What If...? Season 3", "Series", "December 2024", 8],
+      ["Your Friendly Neighborhood Spider-Man", "Series", "January 2025", 10],
+      ["Captain America: Brave New World", "Movie", "February 2025"],
+      ["Daredevil: Born Again Season 1", "Series", "March 2025", 9],
+      ["Thunderbolts*", "Movie", "May 2025"],
+      ["Ironheart", "Series", "June 2025", 6],
+      ["The Fantastic Four: First Steps", "Movie", "July 2025"],
+      ["Eyes of Wakanda", "Series", "August 2025", 4],
+      ["Marvel Zombies", "Series", "October 2025", 4],
+      ["Wonder Man", "Series", "January 2026", 8],
+      ["Daredevil: Born Again Season 2", "Series", "March 2026", 8],
+      ["Spider-Man: Brand New Day", "Movie", "July 2026"],
+      ["VisionQuest", "Series", "2026", 8],
+      ["Avengers: Doomsday", "Movie", "December 2026"],
+      ["Avengers: Secret Wars", "Movie", "December 2027"]
+    ];
+
+    const POWER_RAW = [
+      ["Power", "Series", "2014–2020", 63],
+      ["Power Book II: Ghost", "Series", "2020–2024", 40],
+      ["Power Book IV: Force", "Series", "2022–2025", 30]
+    ];
+
+    const FAV_MOVIES_RAW = [
+      ["Tomorrowland", "Movie", "2015"],
+      ["Superman", "Movie", "2025"],
+      ["F1", "Movie", "2025"],
+      ["Mission: Impossible – The Final Reckoning", "Movie", "2025"],
+      ["Jurassic World Rebirth", "Movie", "2025"],
+      ["Karate Kid: Legends", "Movie", "2025"],
+      ["Heads of State", "Movie", "2025"]
+    ];
+
+    const MOVIES_RAW = [
+      ["Eyes Wide Shut", "Movie", "1999"],
+      ["Normal", "Movie", "2025"],
+      ["Catch Me If You Can", "Movie", "2002"],
+      ["Highest 2 Lowest", "Movie", "2025"],
+      ["The Town", "Movie", "2010"],
+      ["The New Mutants", "Movie", "2020"],
+      ["The Naked Gun", "Movie", "2025"],
+      ["Hero", "Movie", "2002"],
+      ["The Invite", "Movie", "2025"],
+      ["The Unknown Saint", "Movie", "2019"],
+      ["Timeline", "Movie", "2003"],
+      ["The Gentlemen", "Movie", "2019"],
+      ["Snowden", "Movie", "2016"],
+      ["Dumb Money", "Movie", "2023"],
+      ["The Witch", "Movie", "2015"],
+      ["The Lover", "Movie", "1992"],
+      ["Brain Freeze", "Movie", "2021"],
+      ["The Legend of 1900", "Movie", "1998"],
+      ["Good Burger", "Movie", "1997"],
+      ["The Remaining", "Movie", "2014"],
+      ["Wonka", "Movie", "2023"],
+      ["Green Book", "Movie", "2018"],
+      ["Ghost Town", "Movie", "2008"],
+      ["The Holy Mountain", "Movie", "1973"],
+      ["Everything Everywhere All at Once", "Movie", "2022"],
+      ["Inglourious Basterds", "Movie", "2009"],
+      ["The Cursed Wasteland", "Movie", "2024"],
+      ["Don't Buy the Seller", "Movie", "2023"]
+    ];
+
+    const SERIES_RAW = [
+      ["Luther", "Series", "5 Seasons", 20],
+      ["Supacell", "Series", "Netflix", 6],
+      ["Severance", "Series", "Apple TV+", 19],
+      ["See", "Series", "Apple TV+", 24],
+      ["Pachinko", "Series", "Apple TV+", 16],
+      ["Task", "Series", "HBO", 7],
+      ["Succession", "Series", "HBO", 39],
+      ["After Life", "Series", "Netflix", 18],
+      ["Squid Game", "Series", "Netflix", 22],
+      ["Alice in Borderland", "Series", "Netflix", 16],
+      ["The 8 Show", "Series", "Netflix", 8]
+    ];
+
+    function buildSeedItems() {
+      const list = [];
+      let idx = 1;
+      const pushGroup = (arr, colId) => {
+        arr.forEach(([title, type, release, epTotal]) => {
+          list.push({
+            id: `${colId}_${idx++}`,
+            title,
+            type,
+            collectionId: colId,
+            release: release || "",
+            epCurrent: 0,
+            epTotal: type === "Series" ? (epTotal || 10) : 1,
+            rating: 0,
+            completed: false,
+            poster: ""
+          });
+        });
+      };
+      pushGroup(MCU_RAW, "mcu");
+      pushGroup(POWER_RAW, "power");
+      pushGroup(FAV_MOVIES_RAW, "favorites");
+      pushGroup(MOVIES_RAW, "movies");
+      pushGroup(SERIES_RAW, "series");
+      return list;
+    }
+
+    // ================= STATE =================
+    let collections = JSON.parse(localStorage.getItem("mtx_cols_v2") || "null") || SEED_COLLECTIONS;
+    let items = JSON.parse(localStorage.getItem("mtx_items_v2") || "null") || buildSeedItems();
+    const posterCache = JSON.parse(localStorage.getItem("mtx_posters_v2") || "{}");
+
+    let activeView = "dashboard";
+    let activeCollectionId = "all";
+    let activeTypeFilter = "all";
+    let searchQuery = "";
+    let isListView = false;
+    let activeDetailId = null;
+
+    // ================= OFFICIAL POSTER ENGINE (TVMaze + iTunes HD + Wikipedia) =================
+    function cleanSearchTitle(title) {
+      return title
+        .replace(/\s*Season\s*\d+/i, "")
+        .replace(/\*/g, "")
+        .trim();
+    }
+
+    function fetchItunesJSONP(term, mediaType) {
+      return new Promise((resolve) => {
+        const cb = "mtxIt_" + Date.now() + "_" + Math.floor(Math.random() * 9999);
+        const script = document.createElement("script");
+        const timer = setTimeout(() => { cleanup(); resolve(""); }, 4000);
         function cleanup() {
           clearTimeout(timer);
-          delete window[cbName];
+          delete window[cb];
           if (script.parentNode) script.parentNode.removeChild(script);
         }
-
-        window[cbName] = (data) => {
+        window[cb] = (data) => {
           cleanup();
-          const art = data?.results?.[0]?.artworkUrl100;
-          resolve(art ? art.replace("100x100bb", "600x600bb") : "");
+          const res = data?.results?.[0]?.artworkUrl100;
+          resolve(res ? res.replace("100x100bb", "600x600bb") : "");
         };
-
-        script.src = `https://itunes.apple.com/search?term=${encodeURIComponent(title)}&media=${media}&limit=1&callback=${cbName}`;
+        script.src = `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=${mediaType}&limit=3&callback=${cb}`;
         script.onerror = () => { cleanup(); resolve(""); };
         document.body.appendChild(script);
       });
     }
 
-    function typeLabel(t) {
-      return t === "movie" ? "فيلم" : t === "series" ? "مسلسل" : "أنمي";
+    async function fetchTvMaze(term) {
+      try {
+        const res = await fetch(`https://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(term)}`);
+        if (!res.ok) return "";
+        const data = await res.json();
+        return data?.image?.original || data?.image?.medium || "";
+      } catch {
+        return "";
+      }
     }
 
-    function render() {
-      document.getElementById("statTotal").textContent = items.length;
-      const doneCount = items.filter(i => i.completed).length;
-      document.getElementById("statDone").textContent = doneCount;
-      document.getElementById("statWatching").textContent = items.length - doneCount;
+    async function fetchWikiPoster(term) {
+      try {
+        const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(term.replace(/ /g, "_"))}`);
+        if (!res.ok) return "";
+        const data = await res.json();
+        return data?.originalimage?.source || data?.thumbnail?.source || "";
+      } catch {
+        return "";
+      }
+    }
+
+    const inFlightPosters = new Set();
+
+    async function resolvePoster(item) {
+      if (item.poster) return item.poster;
+      const cacheKey = cleanSearchTitle(item.title).toLowerCase();
+      if (posterCache[cacheKey]) return posterCache[cacheKey];
+      if (inFlightPosters.has(cacheKey)) return "";
+
+      inFlightPosters.add(cacheKey);
+      const q = cleanSearchTitle(item.title);
+      let url = "";
+
+      if (item.type === "Series") {
+        url = await fetchTvMaze(q);
+        if (!url) url = await fetchItunesJSONP(q, "tvShow");
+      } else {
+        url = await fetchItunesJSONP(q, "movie");
+        if (!url) url = await fetchWikiPoster(q + " (film)");
+      }
+      if (!url) url = await fetchWikiPoster(q);
+
+      inFlightPosters.delete(cacheKey);
+      if (url) {
+        posterCache[cacheKey] = url;
+        localStorage.setItem("mtx_posters_v2", JSON.stringify(posterCache));
+        // Update matching DOM posters live without full re-render
+        document.querySelectorAll(`[data-poster-key="${CSS.escape(cacheKey)}"]`).forEach(box => {
+          box.innerHTML = `<img src="${url}" alt="${item.title}" loading="lazy" />`;
+        });
+      }
+      return url;
+    }
+
+    const posterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        posterObserver.unobserve(el);
+        const id = el.dataset.itemId;
+        const item = items.find(i => i.id === id);
+        if (item) resolvePoster(item);
+      });
+    }, { rootMargin: "220px" });
+
+    // ================= CLOUD SYNC (FIREBASE FIRESTORE) =================
+    const syncDot = document.getElementById("syncDot");
+    const syncText = document.getElementById("syncText");
+
+    function setSyncState(state, textKey) {
+      syncDot.className = "sync-dot " + state;
+      syncText.textContent = i18n[currentLang][textKey] || textKey;
+    }
+
+    async function saveCloud() {
+      localStorage.setItem("mtx_cols_v2", JSON.stringify(collections));
+      localStorage.setItem("mtx_items_v2", JSON.stringify(items));
+      renderAll();
+      setSyncState("", "syncing");
+      try {
+        await setDoc(cloudDocRef, { collections, items, updatedAt: Date.now() });
+        setSyncState("online", "synced");
+      } catch (e) {
+        console.error(e);
+        setSyncState("error", "offline");
+      }
+    }
+
+    let initialSyncDone = false;
+    onSnapshot(cloudDocRef, (snap) => {
+      if (snap.exists() && Array.isArray(snap.data().items) && snap.data().items.length > 0) {
+        collections = snap.data().collections || SEED_COLLECTIONS;
+        items = snap.data().items;
+        localStorage.setItem("mtx_cols_v2", JSON.stringify(collections));
+        localStorage.setItem("mtx_items_v2", JSON.stringify(items));
+        renderAll();
+      } else if (!initialSyncDone) {
+        // First time ever: push all 142 items + 5 collections to Firebase
+        saveCloud();
+      }
+      initialSyncDone = true;
+      setSyncState("online", "synced");
+    }, (err) => {
+      console.error(err);
+      setSyncState("error", "offline");
+    });
+
+    // ================= RENDERING =================
+    function renderStats() {
+      const total = items.length;
+      const done = items.filter(i => i.completed).length;
+      const rem = total - done;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+
+      document.getElementById("statTotal").textContent = total;
+      document.getElementById("statDone").textContent = done;
+      document.getElementById("statRemaining").textContent = rem;
+
+      document.getElementById("heroSub").textContent = `${done} / ${total}`;
+      document.getElementById("heroPctPill").textContent = `${pct}%`;
+      document.getElementById("heroBarPct").textContent = `${pct}%`;
+      document.getElementById("heroFill").style.width = `${pct}%`;
+
+      // MCU Ring
+      const mcuItems = items.filter(i => i.collectionId === "mcu");
+      const mcuDone = mcuItems.filter(i => i.completed).length;
+      const mcuPct = mcuItems.length ? Math.round((mcuDone / mcuItems.length) * 100) : 0;
+      document.getElementById("ringBadge").textContent = `${mcuPct}%`;
+      document.getElementById("mcuSub").textContent = `${mcuDone} / ${mcuItems.length}`;
+      const dashOffset = 251.2 - (251.2 * mcuPct) / 100;
+      document.getElementById("mcuRingFg").style.strokeDashoffset = dashOffset;
+
+      // Collections Mini Chart
+      document.getElementById("totalColsBadge").textContent = collections.length;
+      const maxCount = Math.max(1, ...collections.map(c => items.filter(i => i.collectionId === c.id).length));
+      const chartBars = document.getElementById("chartBars");
+      chartBars.innerHTML = collections.slice(0, 6).map(c => {
+        const count = items.filter(i => i.collectionId === c.id).length;
+        const h = Math.max(14, Math.round((count / maxCount) * 100));
+        return `
+          <div class="chart-col" data-chart-col="${c.id}" title="${c.name} (${count})">
+            <div class="chart-bar-track">
+              <div class="chart-bar-fill" style="height:${h}%;background:${c.color}"></div>
+            </div>
+            <span class="chart-label">${c.icon}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderCollections() {
+      const grid = document.getElementById("collectionsGrid");
+      grid.innerHTML = collections.map(col => {
+        const colItems = items.filter(i => i.collectionId === col.id);
+        const done = colItems.filter(i => i.completed).length;
+        const pct = colItems.length ? Math.round((done / colItems.length) * 100) : 0;
+        const isActive = activeCollectionId === col.id;
+        return `
+          <div class="col-card ${isActive ? "active-col" : ""}" data-col-id="${col.id}">
+            <div class="col-top">
+              <div class="col-info">
+                <div class="squircle-ico" style="background:${col.color}">${col.icon}</div>
+                <div style="min-width:0">
+                  <div class="col-title" dir="ltr">${col.name}</div>
+                  <div class="col-sub">${colItems.length} works • ${pct}%</div>
+                </div>
+              </div>
+              <span class="col-pill" style="background:${col.color}">${done}/${colItems.length}</span>
+            </div>
+            <div class="col-bar-track">
+              <div class="col-bar-fill" style="width:${pct}%;background:${col.color}"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // Populate select dropdown in Add Modal
+      const sel = document.getElementById("inCollection");
+      sel.innerHTML = collections.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join("");
+    }
+
+    function renderLibrary() {
+      const grid = document.getElementById("mediaGrid");
+      grid.className = "media-grid" + (isListView ? " list-view" : "");
+
+      const activeCol = collections.find(c => c.id === activeCollectionId);
+      document.getElementById("activeCollectionHeading").textContent = activeCol
+        ? `${activeCol.icon} ${activeCol.name}`
+        : (currentLang === "ar" ? "جميع الأعمال" : "All Media");
 
       const filtered = items.filter(item => {
-        const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase());
-        const matchFilter =
-          currentFilter === "all" ? true :
-          currentFilter === "completed" ? item.completed :
-          item.type === currentFilter;
-        return matchSearch && matchFilter;
+        const matchCol = activeCollectionId === "all" || item.collectionId === activeCollectionId;
+        const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (item.release || "").toLowerCase().includes(searchQuery.toLowerCase());
+        const matchType =
+          activeTypeFilter === "all" ? true :
+          activeTypeFilter === "completed" ? item.completed :
+          activeTypeFilter === "unwatched" ? !item.completed :
+          item.type === activeTypeFilter;
+        return matchCol && matchSearch && matchType;
       });
 
       if (!filtered.length) {
-        grid.innerHTML = `<div class="empty">لا توجد أعمال هنا بعد. اضغط على <strong>+ إضافة عمل</strong> للبدء.</div>`;
+        grid.innerHTML = `<div class="empty-state">No matching works found.</div>`;
         return;
       }
 
-      grid.innerHTML = filtered.map(item => {
-        const pct = item.type === "movie"
-          ? (item.completed ? 100 : 0)
-          : Math.min(100, Math.round(((item.epCurrent || 0) / (item.epTotal || 1)) * 100));
+      grid.innerHTML = filtered.map((item, idx) => {
+        const cacheKey = cleanSearchTitle(item.title).toLowerCase();
+        const posterUrl = item.poster || posterCache[cacheKey] || "";
+        const pct = item.type === "Series"
+          ? Math.min(100, Math.round(((item.epCurrent || 0) / (item.epTotal || 1)) * 100))
+          : (item.completed ? 100 : 0);
 
         return `
-          <article class="card ${item.completed ? "completed" : ""}">
-            <div class="poster-wrap">
-              ${item.poster
-                ? `<img src="${item.poster}" alt="${item.title}" loading="lazy" />`
-                : `<div class="poster-placeholder">🎬</div>`}
-              <span class="type-pill">${typeLabel(item.type)}</span>
-              <button class="status-btn" data-action="toggle" data-id="${item.id}" title="تبديل الحالة">✓</button>
-            </div>
-            <div class="card-body">
-              <div class="card-title">${item.title}</div>
-              ${item.type !== "movie" ? `
-                <div class="ep-bar">
-                  <span style="font-size:12px;color:var(--muted)">الحلقة <strong>${item.epCurrent || 0}</strong> / ${item.epTotal || 1}</span>
-                  <div class="ep-controls">
-                    <button class="ep-btn" data-action="ep-minus" data-id="${item.id}">−</button>
-                    <button class="ep-btn" data-action="ep-plus" data-id="${item.id}">+</button>
-                  </div>
+          <article class="media-card ${item.completed ? "completed" : ""}" data-card-id="${item.id}" style="animation-delay:${Math.min(idx * 18, 260)}ms">
+            <div class="media-card-inner">
+              <div class="poster-box">
+                <div class="poster-slot" data-item-id="${item.id}" data-poster-key="${cacheKey}" style="width:100%;height:100%">
+                  ${posterUrl
+                    ? `<img src="${posterUrl}" alt="${item.title}" loading="lazy" />`
+                    : `<div class="poster-fallback"><span class="pf-ico">${item.type === "Series" ? "📺" : "🎬"}</span><span class="pf-txt">${item.title}</span></div>`
+                  }
                 </div>
-                <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
-              ` : ""}
-              <div class="card-footer">
-                <span class="stars" data-action="rate" data-id="${item.id}" title="اضغط لتغيير التقييم">${"★".repeat(item.rating || 5)}${"☆".repeat(5 - (item.rating || 5))}</span>
-                <button class="del-btn" data-action="delete" data-id="${item.id}">حذف</button>
+                ${!isListView ? `<span class="badge-type">${item.type}</span>` : ""}
+                <button class="check-fab" data-quick-toggle="${item.id}" title="Toggle Watched">✓</button>
+              </div>
+              <div class="card-info">
+                <div class="m-title">${item.title}</div>
+                <div class="m-meta">
+                  <span>${item.release || item.type}</span>
+                  <span>${item.rating ? "★".repeat(item.rating) : (item.type === "Series" ? `${item.epCurrent || 0}/${item.epTotal}` : "")}</span>
+                </div>
+                <div class="m-prog-track"><div class="m-prog-fill" style="width:${pct}%"></div></div>
               </div>
             </div>
           </article>
         `;
       }).join("");
+
+      // Observe missing posters for lazy official fetch
+      grid.querySelectorAll(".poster-slot").forEach(slot => {
+        if (!slot.querySelector("img")) posterObserver.observe(slot);
+      });
     }
 
-    // Event delegation for cards
-    grid.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-action]");
-      if (!btn) return;
-      const id = btn.dataset.id;
-      const action = btn.dataset.action;
-      const idx = items.findIndex(i => i.id === id);
-      if (idx === -1) return;
+    function updateViewVisibility() {
+      document.getElementById("dashboardSection").style.display = activeView === "dashboard" ? "block" : "none";
+      document.getElementById("collectionsSection").style.display = (activeView === "dashboard" || activeView === "collections") ? "block" : "none";
+      document.getElementById("librarySection").style.display = "block";
 
-      if (action === "toggle") {
-        items[idx].completed = !items[idx].completed;
-      } else if (action === "ep-plus") {
-        items[idx].epCurrent = Math.min((items[idx].epTotal || 999), (items[idx].epCurrent || 0) + 1);
-        if (items[idx].epCurrent >= items[idx].epTotal) items[idx].completed = true;
-      } else if (action === "ep-minus") {
-        items[idx].epCurrent = Math.max(0, (items[idx].epCurrent || 0) - 1);
-        if (items[idx].epCurrent < items[idx].epTotal) items[idx].completed = false;
-      } else if (action === "rate") {
-        items[idx].rating = (items[idx].rating || 5) >= 5 ? 1 : items[idx].rating + 1;
-      } else if (action === "delete") {
-        if (!confirm(`حذف "${items[idx].title}"؟`)) return;
-        items.splice(idx, 1);
+      document.querySelectorAll(".seg-tab").forEach(t => t.classList.toggle("active", t.dataset.view === activeView));
+      document.querySelectorAll(".dock-item[data-dock]").forEach(d => d.classList.toggle("active", d.dataset.dock === activeView));
+    }
+
+    function renderAll() {
+      renderStats();
+      renderCollections();
+      renderLibrary();
+      updateViewVisibility();
+    }
+
+    // ================= DETAIL MODAL =================
+    function openDetailModal(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      activeDetailId = id;
+      playSound("open");
+
+      const cacheKey = cleanSearchTitle(item.title).toLowerCase();
+      const posterUrl = item.poster || posterCache[cacheKey] || "";
+      const col = collections.find(c => c.id === item.collectionId);
+
+      document.getElementById("detailPosterWrap").innerHTML = posterUrl
+        ? `<img src="${posterUrl}" alt="${item.title}" />`
+        : `<div class="poster-fallback"><span class="pf-ico">🎬</span><span class="pf-txt">${item.title}</span></div>`;
+
+      document.getElementById("detailTitle").textContent = item.title;
+      document.getElementById("detailTags").innerHTML = `
+        <span class="d-tag">${item.type}</span>
+        ${item.release ? `<span class="d-tag">${item.release}</span>` : ""}
+        ${col ? `<span class="d-tag">${col.icon} ${col.name}</span>` : ""}
+      `;
+
+      // Stars
+      const starsEl = document.getElementById("detailStars");
+      starsEl.innerHTML = [1, 2, 3, 4, 5].map(n =>
+        `<span data-star="${n}" class="${n <= (item.rating || 0) ? "lit" : ""}">★</span>`
+      ).join("");
+
+      // Episodes
+      const epBox = document.getElementById("detailEpBox");
+      if (item.type === "Series") {
+        epBox.style.display = "flex";
+        document.getElementById("detailEpLabel").textContent = `Episode ${item.epCurrent || 0} / ${item.epTotal || 10}`;
+      } else {
+        epBox.style.display = "none";
       }
-      saveToCloud();
+
+      document.getElementById("detailPosterInput").value = item.poster || "";
+      document.getElementById("detailToggleBtn").textContent = item.completed ? "✓ Completed" : "Mark Watched";
+      document.getElementById("detailModal").classList.add("open");
+    }
+
+    // ================= EVENT LISTENERS =================
+    // Theme Toggle
+    const savedTheme = localStorage.getItem("mtx_theme") || "dark";
+    document.documentElement.dataset.theme = savedTheme;
+    document.getElementById("themeBtn").textContent = savedTheme === "dark" ? "🌙" : "☀️";
+    document.getElementById("themeBtn").onclick = () => {
+      playSound("click");
+      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem("mtx_theme", next);
+      document.getElementById("themeBtn").textContent = next === "dark" ? "🌙" : "☀️";
+    };
+
+    // Sound Toggle
+    document.getElementById("soundBtn").textContent = soundEnabled ? "🔊" : "🔇";
+    document.getElementById("soundBtn").onclick = () => {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem("mtx_sound", soundEnabled ? "on" : "off");
+      document.getElementById("soundBtn").textContent = soundEnabled ? "🔊" : "🔇";
+      if (soundEnabled) playSound("success");
+    };
+
+    // Language Toggle
+    document.getElementById("langBtn").onclick = () => {
+      playSound("click");
+      currentLang = currentLang === "ar" ? "en" : "ar";
+      localStorage.setItem("mtx_lang", currentLang);
+      applyLanguage();
+      renderAll();
+    };
+
+    // Segmented Tabs & Dock Navigation
+    document.querySelectorAll(".seg-tab").forEach(btn => {
+      btn.onclick = () => {
+        playSound("click");
+        activeView = btn.dataset.view;
+        updateViewVisibility();
+      };
     });
 
-    // Filters & Search
-    document.getElementById("filterTabs").addEventListener("click", (e) => {
-      const tab = e.target.closest(".tab");
-      if (!tab) return;
-      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-      tab.classList.add("active");
-      currentFilter = tab.dataset.filter;
-      render();
+    document.querySelectorAll(".dock-item[data-dock]").forEach(btn => {
+      btn.onclick = () => {
+        playSound("click");
+        activeView = btn.dataset.dock;
+        updateViewVisibility();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+    });
+
+    document.getElementById("dockSearchBtn").onclick = () => {
+      playSound("click");
+      activeView = "library";
+      updateViewVisibility();
+      const inp = document.getElementById("searchInput");
+      inp.focus();
+      inp.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+
+    // Quick Stat Rows & Hero Card & MCU Button
+    document.querySelectorAll(".stat-row-card").forEach(card => {
+      card.onclick = () => {
+        playSound("click");
+        activeTypeFilter = card.dataset.quickFilter;
+        activeCollectionId = "all";
+        document.querySelectorAll(".fpill").forEach(p => p.classList.toggle("active", p.dataset.type === activeTypeFilter));
+        renderAll();
+        document.getElementById("librarySection").scrollIntoView({ behavior: "smooth" });
+      };
+    });
+
+    document.getElementById("openMcuBtn").onclick = () => {
+      playSound("click");
+      activeCollectionId = "mcu";
+      renderAll();
+      document.getElementById("librarySection").scrollIntoView({ behavior: "smooth" });
+    };
+
+    document.getElementById("showAllColsBtn").onclick = () => {
+      playSound("click");
+      activeCollectionId = "all";
+      renderAll();
+    };
+
+    // Collection Card Click & Chart Click
+    document.getElementById("collectionsGrid").addEventListener("click", (e) => {
+      const card = e.target.closest(".col-card");
+      if (!card) return;
+      playSound("click");
+      const cid = card.dataset.colId;
+      activeCollectionId = activeCollectionId === cid ? "all" : cid;
+      renderAll();
+      document.getElementById("librarySection").scrollIntoView({ behavior: "smooth" });
+    });
+
+    document.getElementById("chartBars").addEventListener("click", (e) => {
+      const col = e.target.closest("[data-chart-col]");
+      if (!col) return;
+      playSound("click");
+      activeCollectionId = col.dataset.chartCol;
+      renderAll();
+      document.getElementById("librarySection").scrollIntoView({ behavior: "smooth" });
+    });
+
+    // Type Filters & Search & View Mode
+    document.getElementById("typeFilters").addEventListener("click", (e) => {
+      const pill = e.target.closest(".fpill");
+      if (!pill) return;
+      playSound("click");
+      document.querySelectorAll(".fpill").forEach(p => p.classList.remove("active"));
+      pill.classList.add("active");
+      activeTypeFilter = pill.dataset.type;
+      renderLibrary();
     });
 
     document.getElementById("searchInput").addEventListener("input", (e) => {
       searchQuery = e.target.value;
-      render();
+      renderLibrary();
     });
 
-    // Modal
-    const backdrop = document.getElementById("modalBackdrop");
-    const mType = document.getElementById("mType");
-    const episodesRow = document.getElementById("episodesRow");
+    document.getElementById("viewToggleBtn").onclick = () => {
+      playSound("click");
+      isListView = !isListView;
+      document.getElementById("viewToggleBtn").textContent = isListView ? "☰" : "⊞";
+      renderLibrary();
+    };
 
-    mType.addEventListener("change", () => {
-      episodesRow.style.display = mType.value === "movie" ? "none" : "grid";
+    // Media Grid Interactions (Quick Check or Open Detail)
+    document.getElementById("mediaGrid").addEventListener("click", (e) => {
+      const toggleBtn = e.target.closest("[data-quick-toggle]");
+      if (toggleBtn) {
+        e.stopPropagation();
+        const item = items.find(i => i.id === toggleBtn.dataset.quickToggle);
+        if (!item) return;
+        item.completed = !item.completed;
+        if (item.completed && item.type === "Series") item.epCurrent = item.epTotal;
+        playSound(item.completed ? "success" : "click");
+        saveCloud();
+        return;
+      }
+      const card = e.target.closest(".media-card");
+      if (card) openDetailModal(card.dataset.cardId);
     });
 
-    document.getElementById("openModalBtn").onclick = () => backdrop.classList.add("open");
-    document.getElementById("closeModalBtn").onclick = () => backdrop.classList.remove("open");
-    backdrop.onclick = (e) => { if (e.target === backdrop) backdrop.classList.remove("open"); };
+    // Detail Modal Actions
+    document.getElementById("closeDetailBtn").onclick = () => {
+      playSound("click");
+      document.getElementById("detailModal").classList.remove("open");
+    };
+    document.getElementById("detailModal").onclick = (e) => {
+      if (e.target.id === "detailModal") document.getElementById("detailModal").classList.remove("open");
+    };
 
-    document.getElementById("saveMediaBtn").onclick = async () => {
-      const title = document.getElementById("mTitle").value.trim();
-      if (!title) return alert("اكتب اسم العمل أولاً");
+    document.getElementById("detailStars").addEventListener("click", (e) => {
+      const s = e.target.closest("[data-star]");
+      if (!s || !activeDetailId) return;
+      const item = items.find(i => i.id === activeDetailId);
+      if (!item) return;
+      item.rating = Number(s.dataset.star);
+      playSound("success");
+      saveCloud();
+      openDetailModal(activeDetailId);
+    });
 
-      const saveBtn = document.getElementById("saveMediaBtn");
-      saveBtn.disabled = true;
-      saveBtn.textContent = "جاري الحفظ...";
+    document.getElementById("epPlusBtn").onclick = () => {
+      const item = items.find(i => i.id === activeDetailId);
+      if (!item) return;
+      item.epCurrent = Math.min(item.epTotal || 999, (item.epCurrent || 0) + 1);
+      if (item.epCurrent >= item.epTotal) item.completed = true;
+      playSound("click");
+      saveCloud();
+      openDetailModal(activeDetailId);
+    };
 
-      const type = mType.value;
-      let poster = document.getElementById("mPoster").value.trim();
-      if (!poster) poster = await fetchPosterJSONP(title, type);
+    document.getElementById("epMinusBtn").onclick = () => {
+      const item = items.find(i => i.id === activeDetailId);
+      if (!item) return;
+      item.epCurrent = Math.max(0, (item.epCurrent || 0) - 1);
+      if (item.epCurrent < item.epTotal) item.completed = false;
+      playSound("click");
+      saveCloud();
+      openDetailModal(activeDetailId);
+    };
 
+    document.getElementById("detailToggleBtn").onclick = () => {
+      const item = items.find(i => i.id === activeDetailId);
+      if (!item) return;
+      item.completed = !item.completed;
+      if (item.completed && item.type === "Series") item.epCurrent = item.epTotal;
+      playSound(item.completed ? "success" : "click");
+      saveCloud();
+      openDetailModal(activeDetailId);
+    };
+
+    document.getElementById("updatePosterBtn").onclick = () => {
+      const item = items.find(i => i.id === activeDetailId);
+      if (!item) return;
+      item.poster = document.getElementById("detailPosterInput").value.trim();
+      playSound("success");
+      saveCloud();
+      openDetailModal(activeDetailId);
+    };
+
+    document.getElementById("detailDeleteBtn").onclick = () => {
+      const idx = items.findIndex(i => i.id === activeDetailId);
+      if (idx === -1) return;
+      if (!confirm(`Delete "${items[idx].title}"?`)) return;
+      items.splice(idx, 1);
+      playSound("click");
+      document.getElementById("detailModal").classList.remove("open");
+      saveCloud();
+    };
+
+    // Add Media Modal
+    const openAddItem = () => {
+      playSound("open");
+      if (activeCollectionId !== "all") document.getElementById("inCollection").value = activeCollectionId;
+      document.getElementById("addItemModal").classList.add("open");
+    };
+    document.getElementById("newItemBtn").onclick = openAddItem;
+    document.getElementById("dockAddBtn").onclick = openAddItem;
+    document.getElementById("cancelItemBtn").onclick = () => {
+      playSound("click");
+      document.getElementById("addItemModal").classList.remove("open");
+    };
+
+    document.getElementById("saveItemBtn").onclick = () => {
+      const title = document.getElementById("inTitle").value.trim();
+      if (!title) return alert("Please enter an English title.");
+      const type = document.getElementById("inType").value;
       items.unshift({
         id: "m_" + Date.now(),
         title,
         type,
-        rating: Math.min(5, Math.max(1, Number(document.getElementById("mRating").value) || 5)),
-        epCurrent: type === "movie" ? 0 : (Number(document.getElementById("mEpCurrent").value) || 0),
-        epTotal: type === "movie" ? 1 : (Number(document.getElementById("mEpTotal").value) || 12),
-        poster,
-        completed: false
+        collectionId: document.getElementById("inCollection").value || "movies",
+        release: document.getElementById("inRelease").value.trim(),
+        epCurrent: 0,
+        epTotal: type === "Series" ? (Number(document.getElementById("inTotalEp").value) || 10) : 1,
+        rating: 0,
+        completed: false,
+        poster: document.getElementById("inPoster").value.trim()
       });
-
-      document.getElementById("mTitle").value = "";
-      document.getElementById("mPoster").value = "";
-      saveBtn.disabled = false;
-      saveBtn.textContent = "حفظ ومزامنة";
-      backdrop.classList.remove("open");
-      saveToCloud();
+      document.getElementById("inTitle").value = "";
+      document.getElementById("inRelease").value = "";
+      document.getElementById("inPoster").value = "";
+      document.getElementById("addItemModal").classList.remove("open");
+      playSound("success");
+      saveCloud();
     };
 
-    // Export Backup
-    document.getElementById("exportBtn").onclick = () => {
-      const blob = new Blob([JSON.stringify(items, null, 2)], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "mediatrax-backup.json";
-      a.click();
+    // Add Collection Modal
+    document.getElementById("newColBtn").onclick = () => {
+      playSound("open");
+      document.getElementById("addColModal").classList.add("open");
+    };
+    document.getElementById("cancelColBtn").onclick = () => {
+      playSound("click");
+      document.getElementById("addColModal").classList.remove("open");
+    };
+    document.getElementById("saveColBtn").onclick = () => {
+      const name = document.getElementById("colName").value.trim();
+      if (!name) return alert("Please enter a collection name.");
+      const id = "col_" + Date.now();
+      collections.push({
+        id,
+        name,
+        icon: document.getElementById("colIcon").value.trim() || "🎬",
+        color: document.getElementById("colColor").value || "#9b6bff"
+      });
+      document.getElementById("colName").value = "";
+      document.getElementById("addColModal").classList.remove("open");
+      playSound("success");
+      saveCloud();
     };
 
-    render();
+    // Boot
+    applyLanguage();
+    renderAll();
   </script>
 </body>
 </html>
